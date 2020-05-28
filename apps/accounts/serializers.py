@@ -2,7 +2,6 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
 from rest_framework.validators import UniqueValidator
 
 from .models import Profile, ResetPasswordToken
@@ -12,7 +11,7 @@ from .exceptions import PasswordsNotMatch
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('university', 'birth_date', 'phone_number')
+        fields = ('birth_date', 'phone_number')
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):
@@ -43,7 +42,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         validated_data.pop('password_repeat')
         validated_data['password'] = make_password(
             validated_data.pop('password'))
-        validated_data['is_active'] = False
+        validated_data['is_active'] = True
 
         user = User.objects.create(**validated_data)
         Profile.objects.create(user=user, **profile_data)

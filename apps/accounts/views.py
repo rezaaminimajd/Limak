@@ -26,14 +26,14 @@ class SignUpAPIView(GenericAPIView):
     serializer_class = UserSignUpSerializer
 
     def post(self, request):
-        from .tasks import send_activation_email
+        from .tasks import send_signup_email
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         send_date = timezone.now() + timezone.timedelta(seconds=5)
 
-        send_activation_email.apply_async(
+        send_signup_email.apply_async(
             [serializer.validated_data['email']],
             eta=send_date
         )
@@ -50,13 +50,13 @@ class ResendActivationEmailAPIView(GenericAPIView):
     serializer_class = EmailSerializer
 
     def post(self, request):
-        from .tasks import send_activation_email
+        from .tasks import send_signup_email
 
         data = self.get_serializer(data=request.data).data
         user = get_object_or_404(User, email=data['email'])
 
         send_date = timezone.now() + timezone.timedelta(seconds=5)
-        send_activation_email.apply_async(
+        send_signup_email.apply_async(
             [user.email],
             eta=send_date
         )
