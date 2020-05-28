@@ -42,7 +42,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         validated_data.pop('password_repeat')
         validated_data['password'] = make_password(
             validated_data.pop('password'))
-        validated_data['is_active'] = False
+        validated_data['is_active'] = True
 
         user = User.objects.create(**validated_data)
         Profile.objects.create(user=user, **profile_data)
