@@ -9,10 +9,21 @@ class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile',
                                 on_delete=models.CASCADE)
 
-    university = models.CharField(max_length=64)
     birth_date = models.DateField()
     phone_number = models.CharField(max_length=32)
-    # major = models.CharField(max_length=128)
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, related_name='addresses',
+                             on_delete=models.CASCADE)
+
+    state = models.CharField(max_length=64)
+    city = models.CharField(max_length=64)
+
+    postal_code = models.IntegerField()
+    postal_address = models.TextField()
+    house_number = models.IntegerField()
+    unit = models.PositiveSmallIntegerField(blank=True, null=True)
 
 
 class ResetPasswordToken(models.Model):
