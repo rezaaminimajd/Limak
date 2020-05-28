@@ -12,6 +12,7 @@ class Clothe(models.Model):
     is_discounted = models.BooleanField(default=False)
     description = models.CharField(max_length=1024)
     kind = models.ForeignKey('store.ClotheKind', on_delete=models.CASCADE)
+    category = models.ForeignKey('store.Category', on_delete=models.CASCADE)
 
 
 class ClotheInfo(models.Model):
