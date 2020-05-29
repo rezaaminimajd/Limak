@@ -46,33 +46,6 @@ class SignUpAPIView(GenericAPIView):
         )
 
 
-class ResendActivationEmailAPIView(GenericAPIView):
-    serializer_class = EmailSerializer
-
-    def post(self, request):
-        from .tasks import send_signup_email
-
-        data = self.get_serializer(data=request.data).data
-        user = get_object_or_404(User, email=data['email'])
-
-        send_date = timezone.now() + timezone.timedelta(seconds=5)
-        send_signup_email.apply_async(
-            [user.email],
-            eta=send_date
-        )
-
-        return Response(
-            data={'details': _('Activation email sent, check your email')},
-            status=status.HTTP_200_OK
-        )
-
-
-class ActivateAccountAPIView(GenericAPIView):
-
-    def get(self, request, eid, token):
-        pass
-
-
 class ResetPasswordAPIView(GenericAPIView):
     serializer_class = EmailSerializer
 
