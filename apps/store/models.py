@@ -1,11 +1,12 @@
 from django.db import models
+from model_utils.models import UUIDModel, TimeStampedModel
 
 
-class Category(models.Model):
+class Category(TimeStampedModel):
     name = models.CharField(max_length=64)
 
 
-class Clothe(models.Model):
+class Clothe(TimeStampedModel, UUIDModel):
     code = models.CharField(max_length=128)
     price = models.IntegerField()
     discounted_price = models.IntegerField()
@@ -15,7 +16,7 @@ class Clothe(models.Model):
     category = models.ForeignKey('store.Category', on_delete=models.CASCADE)
 
 
-class ClotheInfo(models.Model):
+class ClotheInfo(TimeStampedModel):
     clothe = models.ForeignKey('store.Clothe', related_name='information',
                                on_delete=models.CASCADE)
     count = models.IntegerField()
@@ -27,19 +28,19 @@ class ClotheInfo(models.Model):
         return self.count == 0
 
 
-class ClotheSize(models.Model):
+class ClotheSize(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(max_length=64)
     enable = models.BooleanField(default=True)
 
 
-class ClotheKind(models.Model):
+class ClotheKind(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(max_length=64)
     enable = models.BooleanField(default=True)
 
 
-class ClotheColor(models.Model):
+class ClotheColor(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(max_length=64)
     enable = models.BooleanField(default=True)

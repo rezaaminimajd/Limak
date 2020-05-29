@@ -1,3 +1,15 @@
 from django.shortcuts import render
 
-# Create your views here.
+from rest_framework.generics import GenericAPIView
+
+
+class StorePage(GenericAPIView):
+    pass
+
+
+class ClothePage(GenericAPIView):
+    pass
+
+
+class EditBasket(GenericAPIView):
+    pass
