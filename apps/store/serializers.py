@@ -20,6 +20,12 @@ class ClotheKindSerializers(serializers.ModelSerializer):
         exclude = ['id']
 
 
+class CategorySerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        exclude = ['id']
+
+
 class ClotheInfoSerializers(serializers.ModelSerializer):
     color = ClotheColorSerializers()
     size = ClotheSizeSerializers()
@@ -31,6 +37,7 @@ class ClotheInfoSerializers(serializers.ModelSerializer):
 
 class ClotheSerializers(serializers.ModelSerializer):
     kind = ClotheKindSerializers()
+    category = CategorySerializers()
     clothe_info = ClotheInfoSerializers(many=True)
 
     class Meta:
