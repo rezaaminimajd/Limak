@@ -7,10 +7,13 @@ from apps.store.models import *
 
 class ClotheInfoInline(admin.StackedInline):
     model = ClotheInfo
+    readonly_fields = ['id']
 
 
 @admin.register(Clothe)
 class ClotheAdmin(ModelAdmin):
+    list_display = ['code', 'price', 'discounted_price', 'is_discounted',
+                    'category', 'kind']
     inlines = [ClotheInfoInline]
 
 

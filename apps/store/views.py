@@ -19,6 +19,12 @@ class StorePage(GenericAPIView):
     pagination_class = StorePagination
 
     def get(self, request):
+        page = self.paginate_queryset(self.get_queryset())
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(
+                data={'clothes': serializer.data})
+
         data = self.get_serializer(self.get_queryset(), many=True).data
         return Response(data={'clothes': data}, status=status.HTTP_200_OK)
 
