@@ -1,13 +1,26 @@
 from django.shortcuts import render
 
 from rest_framework.generics import GenericAPIView, get_object_or_404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 
 
+class StorePagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
 class StorePage(GenericAPIView):
-    pass
+    queryset = Clothe.objects.all()
+    serializer_class = ClotheSerializers
+    pagination_class = StorePagination
+
+    def get(self):
+        data = self.get_serializer(self.get_queryset(), many=True).data
+        return Response(data={'clothes': data}, status=status.HTTP_200_OK)
 
 
 class ClothePage(GenericAPIView):
