@@ -31,16 +31,16 @@ class ClotheInfoSerializers(serializers.ModelSerializer):
     size = ClotheSizeSerializers()
 
     class Meta:
-        model = ClotheSize
+        model = ClotheInfo
         fields = ['count', 'color', 'size']
 
 
 class ClotheSerializers(serializers.ModelSerializer):
     kind = ClotheKindSerializers()
     category = CategorySerializers()
-    clothe_info = ClotheInfoSerializers(many=True)
+    information = ClotheInfoSerializers(many=True)
 
     class Meta:
         model = Clothe
         fields = ['id', 'code', 'price', 'discounted_price', 'is_discounted',
-                  'category', 'kind', 'description', 'clothe_info']
+                  'category', 'kind', 'description', 'information']

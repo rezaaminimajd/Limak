@@ -18,7 +18,7 @@ class Clothe(TimeStampedModel, UUIDModel):
     category = models.ForeignKey('store.Category', on_delete=models.CASCADE)
 
 
-class ClotheInfo(TimeStampedModel):
+class ClotheInfo(TimeStampedModel, UUIDModel):
     clothe = models.ForeignKey('store.Clothe', related_name='information',
                                on_delete=models.CASCADE)
     count = models.IntegerField()

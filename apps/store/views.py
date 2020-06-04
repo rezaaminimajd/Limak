@@ -18,7 +18,7 @@ class StorePage(GenericAPIView):
     serializer_class = ClotheSerializers
     pagination_class = StorePagination
 
-    def get(self):
+    def get(self, request):
         data = self.get_serializer(self.get_queryset(), many=True).data
         return Response(data={'clothes': data}, status=status.HTTP_200_OK)
 
@@ -26,7 +26,7 @@ class StorePage(GenericAPIView):
 class ClothePage(GenericAPIView):
     serializer_class = ClotheSerializers
 
-    def get(self, clothe_id):
+    def get(self, request, clothe_id):
         obj = get_object_or_404(Clothe, id=clothe_id)
         clothe = self.get_serializer(obj).data
         return Response(data={'clothe': clothe}, status=status.HTTP_200_OK)
@@ -39,7 +39,7 @@ class EditBasketView(GenericAPIView):
 class ClotheSizeView(GenericAPIView):
     serializer_class = ClotheSizeSerializers
 
-    def get(self):
+    def get(self, request):
         obj = ClotheSize.objects.all()
         data = self.get_serializer(obj).data
         return Response(data={'clotheSizes': data},
@@ -49,7 +49,7 @@ class ClotheSizeView(GenericAPIView):
 class ClotheColorView(GenericAPIView):
     serializer_class = ClotheColorSerializers
 
-    def get(self):
+    def get(self, request):
         obj = ClotheColor.objects.all()
         data = self.get_serializer(obj).data
         return Response(data={'clotheSizes': data},
@@ -59,7 +59,7 @@ class ClotheColorView(GenericAPIView):
 class ClotheKindView(GenericAPIView):
     serializer_class = ClotheKindSerializers
 
-    def get(self):
+    def get(self, request):
         obj = ClotheKind.objects.all()
         data = self.get_serializer(obj).data
         return Response(data={'clotheSizes': data},
@@ -69,7 +69,7 @@ class ClotheKindView(GenericAPIView):
 class CategoryView(GenericAPIView):
     serializer_class = CategorySerializers
 
-    def get(self):
+    def get(self, request):
         obj = Category.objects.all()
         data = self.get_serializer(obj).data
         return Response(data={'clotheSizes': data},
