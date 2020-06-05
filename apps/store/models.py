@@ -5,7 +5,7 @@ from model_utils.models import UUIDModel, TimeStampedModel
 
 
 class Category(TimeStampedModel):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
         return self.name
@@ -41,7 +41,7 @@ class ClotheInfo(TimeStampedModel, UUIDModel):
 
 class ClotheSize(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     enable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -50,7 +50,7 @@ class ClotheSize(TimeStampedModel):
 
 class ClotheKind(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     enable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -59,7 +59,7 @@ class ClotheKind(TimeStampedModel):
 
 class ClotheColor(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     enable = models.BooleanField(default=True)
 
     def __str__(self):

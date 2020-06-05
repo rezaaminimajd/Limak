@@ -31,7 +31,7 @@ class StorePage(GenericAPIView):
 
     def post(self, request):
         filters = request.data
-        objects = Filter(self.get_queryset(), filters)
+        objects = Filter(self.get_queryset(), filters).apply_filters()
 
         page = self.paginate_queryset(objects)
         if page is not None:
