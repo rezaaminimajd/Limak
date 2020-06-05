@@ -5,6 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
+from .services.filter import Filter
 
 
 class StorePagination(PageNumberPagination):
@@ -26,6 +27,19 @@ class StorePage(GenericAPIView):
                 data={'clothes': serializer.data})
 
         data = self.get_serializer(self.get_queryset(), many=True).data
+        return Response(data={'clothes': data}, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        filters = request.data
+        objects = Filter(self.get_queryset(), filters)
+
+        page = self.paginate_queryset(objects)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(
+                data={'clothes': serializer.data})
+
+        data = self.get_serializer(objects, many=True).data
         return Response(data={'clothes': data}, status=status.HTTP_200_OK)
 
 
