@@ -1,9 +1,14 @@
+import json
+
 from django.shortcuts import render
+from rest_framework.exceptions import NotFound
 
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+
 from .serializers import *
 from .services.filter import Filter
 
@@ -50,6 +55,62 @@ class ClothePage(GenericAPIView):
         obj = get_object_or_404(Clothe, id=clothe_id)
         clothe = self.get_serializer(obj).data
         return Response(data={'clothe': clothe}, status=status.HTTP_200_OK)
+
+
+class BasketAPIView(GenericAPIView):
+    serializer_class = BasketSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        basket = request.user.baskets.filter(payed=False).last()
+        data = self.get_serializer(basket).data
+        return Response(data={'basket': data}, status=status.HTTP_200_OK)
+
+
+class ProductInBasketAPIView(GenericAPIView):
+    serializer_class = ProductInBasketSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(data={'details': 'Product added to basket!'},
+                            status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, product_id):
+        count = json.loads(request.body)['count']
+        try:
+            count = int(count)
+        except ValueError:
+            return Response(data={'details': 'Unexpected value'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        else:
+            product = self.get_product(product_id)
+            product.count -= count
+            product.save()
+            return Response(status.HTTP_200_OK)
+
+    def delete(self, request, product_id):
+        product = self.get_product(product_id)
+        product.delete()
+
+        return Response(status=status.HTTP_200_OK)
+
+    def get_product(self, product_id) -> ProductInBasket:
+        basket = self.request.user.baskets.filter(payed=False).last()
+
+        if not basket:
+            raise NotFound()
+
+        product = ProductInBasket.objects.filter(id=product_id).filter(
+            basket=basket).last()
+        if not product:
+            raise NotFound()
+
+        return product
 
 
 class EditBasketView(GenericAPIView):

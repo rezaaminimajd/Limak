@@ -12,5 +12,11 @@ urlpatterns = [
          name='clothe_kind'),
     path('clothe-size', view=views.ClotheSizeView.as_view()),
     path('clothe-color', view=views.ClotheColorView.as_view()),
-    path('category', view=views.CategoryView.as_view())
+    path('category', view=views.CategoryView.as_view()),
+    path('basket', view=views.BasketAPIView.as_view(), name='basket'),
+    path('basket/add', view=views.ProductInBasketAPIView.as_view(),
+         name='basket_add'),
+    path('basket/edit/<str:product_id>',
+         view=views.ProductInBasketAPIView.as_view(),
+         name='basket_edit'),
 ]

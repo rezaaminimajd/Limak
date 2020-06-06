@@ -44,3 +44,30 @@ class ClotheSerializers(serializers.ModelSerializer):
         model = Clothe
         fields = ['id', 'code', 'price', 'discounted_price', 'is_discounted',
                   'category', 'kind', 'description', 'information']
+
+
+class ClotheInBasketSerializer(serializers.ModelSerializer):
+    kind = ClotheKindSerializers()
+    category = CategorySerializers()
+
+    class Meta:
+        model = Clothe
+        fields = ('id', 'code', 'price', 'discounted_price', 'is_discounted',
+                  'category', 'kind', 'description')
+
+
+class ProductInBasketSerializer(serializers.ModelSerializer):
+    clothe = ClotheInBasketSerializer(read_only=True)
+    color = ClotheColorSerializers(read_only=True)
+
+    class Meta:
+        model = ProductInBasket
+        fields = ('clothe', 'count', 'color')
+
+
+class BasketSerializer(serializers.ModelSerializer):
+    products = ProductInBasketSerializer(many=True)
+
+    class Meta:
+        model = Basket
+        fields = ('products', 'payed')
