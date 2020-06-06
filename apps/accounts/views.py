@@ -8,7 +8,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import (UserSignUpSerializer, EmailSerializer,
-                          ResetPasswordConfirmSerializer)
+                          ResetPasswordConfirmSerializer,
+                          ChangePasswordSerializer)
 
 
 # Create your views here.
@@ -80,6 +81,21 @@ class ResetPasswordConfirmAPIView(GenericAPIView):
         reset_password_confirm.apply_async(
             [data['uid'], data['token'], data['password']]
         )
+
+        return Response(
+            data={'details': _('Password changed successfully')},
+            status=status.HTTP_200_OK
+        )
+
+
+class ChangePasswordAPIView(GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
         return Response(
             data={'details': _('Password changed successfully')},

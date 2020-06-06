@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from .models import Profile, ResetPasswordToken
-from .exceptions import PasswordsNotMatch
+from .exceptions import PasswordsNotMatch, WrongPassword
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -67,3 +67,24 @@ class ResetPasswordConfirmSerializer(serializers.ModelSerializer):
             raise PasswordsNotMatch()
 
         return attrs
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(style={'input_type': 'password'})
+    new_password = serializers.CharField(style={'input_type': 'password'})
+    new_password_repeat = serializers.CharField(
+        style={'input_type': 'password'})
+
+    def validate(self, data):
+        if data['new_password'] != data['new_password_repeat']:
+            raise PasswordsNotMatch()
+        if not self.context['request'].check_password(data['old_password']):
+            raise WrongPassword()
+
+    def save(self, **kwargs):
+        self.context['request'].user.set_password(
+            self.validated_data['new_password']
+        )
+        self.context['request'].user.save()
+
+        return self.context['request'].user
