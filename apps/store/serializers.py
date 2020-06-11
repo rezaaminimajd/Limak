@@ -5,25 +5,25 @@ from .models import *
 class ClotheSizeSerializers(serializers.ModelSerializer):
     class Meta:
         model = ClotheSize
-        exclude = ['id']
+        fields = ['name']
 
 
 class ClotheColorSerializers(serializers.ModelSerializer):
     class Meta:
         model = ClotheColor
-        exclude = ['id']
+        fields = ['name']
 
 
 class ClotheKindSerializers(serializers.ModelSerializer):
     class Meta:
         model = ClotheKind
-        exclude = ['id']
+        fields = ['name']
 
 
 class CategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
-        exclude = ['id']
+        fields = ['name']
 
 
 class ClotheInfoSerializers(serializers.ModelSerializer):
