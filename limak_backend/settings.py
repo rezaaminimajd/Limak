@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.core',
     'apps.store',
+    'apps.mainpage',
     'corsheaders'
 ]
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import messages
 
 
 class Information(models.Model):
@@ -8,6 +9,13 @@ class Information(models.Model):
     telegram_id = models.CharField(max_length=256)
     twitter_id = models.CharField(max_length=256)
 
+    def __str__(self):
+        return 'Information'
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        pass
+        query = Information.objects.all()
+        if len(query) == 0:
+            super(Information, self).save()
+        else:
+           messages.warning()
