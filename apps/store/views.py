@@ -113,16 +113,12 @@ class ProductInBasketAPIView(GenericAPIView):
         return product
 
 
-class EditBasketView(GenericAPIView):
-    pass
-
-
 class ClotheSizeView(GenericAPIView):
     serializer_class = ClotheSizeSerializers
 
     def get(self, request):
         obj = ClotheSize.objects.all()
-        data = self.get_serializer(obj).data
+        data = self.get_serializer(obj, many=True).data
         return Response(data={'clotheSizes': data},
                         status=status.HTTP_200_OK)
 
@@ -132,7 +128,7 @@ class ClotheColorView(GenericAPIView):
 
     def get(self, request):
         obj = ClotheColor.objects.all()
-        data = self.get_serializer(obj).data
+        data = self.get_serializer(obj, many=True).data
         return Response(data={'clotheSizes': data},
                         status=status.HTTP_200_OK)
 
@@ -142,7 +138,7 @@ class ClotheKindView(GenericAPIView):
 
     def get(self, request):
         obj = ClotheKind.objects.all()
-        data = self.get_serializer(obj).data
+        data = self.get_serializer(obj, many=True).data
         return Response(data={'clotheSizes': data},
                         status=status.HTTP_200_OK)
 
@@ -152,6 +148,6 @@ class CategoryView(GenericAPIView):
 
     def get(self, request):
         obj = Category.objects.all()
-        data = self.get_serializer(obj).data
+        data = self.get_serializer(obj, many=True).data
         return Response(data={'clotheSizes': data},
                         status=status.HTTP_200_OK)
