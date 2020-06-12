@@ -2,7 +2,7 @@ import json
 
 from django.shortcuts import render
 from rest_framework.exceptions import NotFound
-
+import operator
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -113,16 +113,12 @@ class ProductInBasketAPIView(GenericAPIView):
         return product
 
 
-class EditBasketView(GenericAPIView):
-    pass
-
-
 class ClotheSizeView(GenericAPIView):
     serializer_class = ClotheSizeSerializers
 
     def get(self, request):
-        obj = ClotheSize.objects.all()
-        data = self.get_serializer(obj).data
+        obj = ClotheSize.objects.filter(enable=True).order_by('order')
+        data = self.get_serializer(obj, many=True).data
         return Response(data={'clotheSizes': data},
                         status=status.HTTP_200_OK)
 
@@ -131,9 +127,9 @@ class ClotheColorView(GenericAPIView):
     serializer_class = ClotheColorSerializers
 
     def get(self, request):
-        obj = ClotheColor.objects.all()
-        data = self.get_serializer(obj).data
-        return Response(data={'clotheSizes': data},
+        obj = ClotheColor.objects.filter(enable=True).order_by('order')
+        data = self.get_serializer(obj, many=True).data
+        return Response(data={'clotheColor': data},
                         status=status.HTTP_200_OK)
 
 
@@ -141,9 +137,9 @@ class ClotheKindView(GenericAPIView):
     serializer_class = ClotheKindSerializers
 
     def get(self, request):
-        obj = ClotheKind.objects.all()
-        data = self.get_serializer(obj).data
-        return Response(data={'clotheSizes': data},
+        obj = ClotheKind.objects.filter(enable=True).order_by('order')
+        data = self.get_serializer(obj, many=True).data
+        return Response(data={'clotheKind': data},
                         status=status.HTTP_200_OK)
 
 
@@ -152,6 +148,6 @@ class CategoryView(GenericAPIView):
 
     def get(self, request):
         obj = Category.objects.all()
-        data = self.get_serializer(obj).data
-        return Response(data={'clotheSizes': data},
+        data = self.get_serializer(obj, many=True).data
+        return Response(data={'category': data},
                         status=status.HTTP_200_OK)
