@@ -12,6 +12,15 @@ class Category(TimeStampedModel):
         return self.name
 
 
+class ClotheKind(TimeStampedModel):
+    order = models.PositiveSmallIntegerField(default=1)
+    name = models.CharField(max_length=64, unique=True, primary_key=True)
+    enable = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Clothe(TimeStampedModel, UUIDModel):
     code = models.CharField(max_length=128)
     price = models.IntegerField()
@@ -42,15 +51,6 @@ class ClotheInfo(TimeStampedModel, UUIDModel):
 
 
 class ClotheSize(TimeStampedModel):
-    order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64, unique=True, primary_key=True)
-    enable = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
-
-
-class ClotheKind(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(max_length=64, unique=True, primary_key=True)
     enable = models.BooleanField(default=True)
