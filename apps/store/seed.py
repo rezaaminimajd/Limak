@@ -6,7 +6,7 @@ from .models import (Category, Clothe, ClotheInfo, ClotheSize, ClotheKind,
                      ClotheColor)
 
 
-def seed_accounts_app():
+def seed_store_app():
     from django_seed import Seed
 
     seeder = Seed.seeder()
