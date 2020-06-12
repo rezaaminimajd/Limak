@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
+
 from .models import *
 
 
@@ -59,10 +61,33 @@ class ClotheInBasketSerializer(serializers.ModelSerializer):
 class ProductInBasketSerializer(serializers.ModelSerializer):
     clothe = ClotheInBasketSerializer(read_only=True)
     color = ClotheColorSerializers(read_only=True)
+    size = ClotheSizeSerializers(read_only=True)
 
     class Meta:
         model = ProductInBasket
-        fields = ('clothe', 'count', 'color')
+        fields = ('clothe', 'count', 'color', 'size',
+                  'clothe_id', 'color_name', 'size_name')
+        extra_kwargs = {
+            'clothe_id': {'write_only': True},
+            'color_name': {'write_only': True},
+            'size_name': {'write_only': True}
+        }
+
+    def validate(self, attrs):
+        attrs['clothe'] = get_object_or_404(Clothe,
+                                            id=attrs.get('clothe_id'))
+        attrs['color'] = get_object_or_404(ClotheColor,
+                                           name=attrs.get('color_name'))
+        attrs['size'] = get_object_or_404(ClotheSize,
+                                          name=attrs.get('size_name'))
+        basket = Basket.objects.filter(user=self.context['request'].user
+                                       ).filter(payed=False).last()
+        if not basket:
+            basket - Basket.objects.create(user=self.context['request'].user)
+        attrs['basket'] = basket
+
+    def create(self, validated_data):
+        return ProductInBasket.objects.create(**validated_data)
 
 
 class BasketSerializer(serializers.ModelSerializer):

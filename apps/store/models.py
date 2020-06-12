@@ -30,6 +30,7 @@ class ClotheInfo(TimeStampedModel, UUIDModel):
     count = models.IntegerField()
     color = models.ForeignKey('store.ClotheColor', on_delete=models.CASCADE)
     size = models.ForeignKey('store.ClotheSize', on_delete=models.CASCADE)
+    for_basket = models.BooleanField(default=False)
 
     @property
     def is_finish(self):
@@ -41,7 +42,7 @@ class ClotheInfo(TimeStampedModel, UUIDModel):
 
 class ClotheSize(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, primary_key=True)
     enable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -50,7 +51,7 @@ class ClotheSize(TimeStampedModel):
 
 class ClotheKind(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, primary_key=True)
     enable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -59,7 +60,7 @@ class ClotheKind(TimeStampedModel):
 
 class ClotheColor(TimeStampedModel):
     order = models.PositiveSmallIntegerField(default=1)
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, primary_key=True)
     enable = models.BooleanField(default=True)
 
     def __str__(self):
@@ -82,6 +83,9 @@ class ProductInBasket(TimeStampedModel):
 
     count = models.IntegerField(default=1)
 
-    color = models.ForeignKey('store.Clothe',
+    color = models.ForeignKey('store.ClotheColor',
                               related_name='colors_in_basket',
                               on_delete=models.CASCADE)
+    size = models.ForeignKey('store.ClotheSize',
+                             related_name='sizes_in_basket',
+                             on_delete=models.CASCADE)

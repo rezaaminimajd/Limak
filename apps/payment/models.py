@@ -6,14 +6,20 @@ class TransactionCreatorRequest(models.Model):
 
 
 class Transaction(models.Model):
-    id = models.CharField(max_length=512)
+    id_pay_id = models.CharField(max_length=512, unique=True)
     link = models.CharField(max_length=512)
+    order = models.ForeignKey('store.Basket', related_name='transactions',
+                              on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=256, blank=True, null=True)
+    phone = models.CharField(max_length=64, blank=True, null=True)
+    mail = models.CharField(max_length=64, blank=True, null=True)
+    desc = models.CharField(max_length=256, blank=True, null=True)
 
 
 class TransactionInquiryResponse(models.Model):
     status = models.IntegerField()
     track_id = models.IntegerField()
-    id = models.CharField(max_length=512)
+    id_pay_id = models.CharField(max_length=512)
     order_id = models.CharField(max_length=512)
     amount = models.IntegerField()
 

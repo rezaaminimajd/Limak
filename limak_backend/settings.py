@@ -25,7 +25,7 @@ SECRET_KEY = 'qtr=h1(-a2xz32*&*9itk697gnf7k@y#g&utq16m8e%@m(qq&7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.store',
     'apps.mainpage',
-    'corsheaders'
+    'corsheaders',
+    'apps.payment'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,7 @@ REST_FRAMEWORK = {
 }
 
 IDPAY_APIKEY = config('IDPAY_APIKEY')
+CREATE_TRANSACTION_URL = config('CREATE_TRANSACTION_URL')
+
+PAYMENT_HEADER = {'Content-Type': 'application/json',
+                  'X-API-KEY': IDPAY_APIKEY}
