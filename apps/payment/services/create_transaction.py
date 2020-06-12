@@ -16,12 +16,13 @@ class CreateTransaction:
         self.transaction = None
         self.post_json = {}
         self.response = None
+        self.error = False
 
     def run(self):
         self._fill_post_json()
         self._send_request()
         transaction = self._create_transaction()
-        return transaction
+        return transaction, self.error
 
     def _fill_post_json(self):
         self.post_json = {
@@ -51,5 +52,6 @@ class CreateTransaction:
         self.post_json.pop('reseller')
         if self.response.status_code != status.HTTP_201_CREATED:
             self.post_json['errors'] = str(self.response.json)
+            self.error = True
 
         return Transaction.objects.create(**self.post_json)

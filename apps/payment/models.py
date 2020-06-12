@@ -1,4 +1,5 @@
 from django.db import models
+from model_utils.models import TimeStampedModel, UUIDModel
 
 
 class TransactionStatusTypes:
@@ -37,7 +38,7 @@ class TransactionCreatorRequest(models.Model):
     pass
 
 
-class Transaction(models.Model):
+class Transaction(UUIDModel, TimeStampedModel):
     id_pay_id = models.CharField(max_length=512, unique=True)
     link = models.CharField(max_length=512)
     order = models.ForeignKey('store.Basket', related_name='transactions',
@@ -48,6 +49,15 @@ class Transaction(models.Model):
     mail = models.CharField(max_length=64, blank=True, null=True)
     desc = models.CharField(max_length=256, blank=True, null=True)
 
+    @property
+    def payed(self):
+        return self.callbacks.all().last().status in (
+            TransactionStatusTypes.PAYMENT_VERIFIED,
+            TransactionStatusTypes.PAYMENT_VERIFIED_PREVIOUSLY,
+            TransactionStatusTypes.TRANSFERRED_COMPLETELY
+
+        )
+
     errors = models.TextField(default='')
 
     class Meta:
@@ -55,6 +65,25 @@ class Transaction(models.Model):
             models.UniqueConstraint(fields=('id_pay_id', 'order'),
                                     name='unique_order'),
         )
+
+
+class TransactionCallback(UUIDModel, TimeStampedModel):
+    transaction = models.ForeignKey(Transaction,
+                                    related_name='callbacks',
+                                    on_delete=models.CASCADE,
+                                    blank=True,
+                                    null=True)
+    status = models.PositiveSmallIntegerField(
+        choices=TransactionStatusTypes.TYPES
+    )
+    track_id = models.IntegerField()
+    id_pay_id = models.CharField(max_length=512)
+    order_id = models.CharField(max_length=128)
+    amount = models.IntegerField()
+    card_no = models.CharField(max_length=128)
+    hashed_card_no = models.CharField(max_length=512)
+    date = models.DateTimeField()
+    errors = models.TextField(default='')
 
 
 class TransactionInquiryResponse(models.Model):
