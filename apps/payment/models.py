@@ -10,10 +10,27 @@ class TransactionStatusTypes:
     SYSTEMIC_RETURNED = 6
     CANCELED_PAYMENT = 7
     TRANSFERRED_TO_PAYMENT_PAGE = 8
-    WAITING_FOR_PAYMENT_CONFIRMATION = 10
-    PAYMENT_CONFIRMED = 100
-    PAYMENT_CONFIRMED_PREVIOUSLY = 101
+    WAITING_FOR_PAYMENT_VERIFICATION = 10
+    PAYMENT_VERIFIED = 100
+    PAYMENT_VERIFIED_PREVIOUSLY = 101
     TRANSFERRED_COMPLETELY = 200
+
+    TYPES = (
+        (NOT_PAYED, 'پرداخت انجام نشده است'),
+        (PAYMENT_UNSUCCESSFUL, 'پرداخت ناموفق بوده است'),
+        (ERROR, 'خطا رخ داده است'),
+        (MONEY_BLOCKED, 'بلوکه شده'),
+        (RETURN_PAYER, 'برگشت به پرداخت کننده'),
+        (SYSTEMIC_RETURNED, 'برگشت خورده سیستمی'),
+        (CANCELED_PAYMENT, 'انصراف از پرداخت'),
+        (TRANSFERRED_TO_PAYMENT_PAGE, 'به درگاه پرداخت منتقل شد'),
+        (WAITING_FOR_PAYMENT_VERIFICATION, 'در انتظار تایید پرداخت'),
+        (PAYMENT_VERIFIED, 'پرداخت تایید شده است'),
+        (PAYMENT_VERIFIED_PREVIOUSLY, 'پرداخت قبلا تایید شده است'),
+        (TRANSFERRED_COMPLETELY, 'به دریافت کننده واریز شد')
+    )
+
+    TYPES_DICT = dict(TYPES)
 
 
 class TransactionCreatorRequest(models.Model):
