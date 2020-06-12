@@ -5,3 +5,4 @@ django-cors-headers==3.3.0
 python-decouple==3.3
 requests==2.23.0
 celery==4.4.5
+django-seed==0.2.2

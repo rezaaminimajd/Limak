@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'apps.store',
     'apps.mainpage',
     'corsheaders',
-    'apps.payment'
+    'apps.payment',
+    'django_seed'
 ]
 
 MIDDLEWARE = [
