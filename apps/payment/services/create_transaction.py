@@ -45,13 +45,13 @@ class CreateTransaction:
 
     def _create_transaction(self):
         self.post_json['order'] = self.order
-        self.post_json['id_pay_id'] = self.response.json.get('id', -1)
-        self.post_json['link'] = self.response.json.get('link', -1)
+        self.post_json['id_pay_id'] = self.response.json().get('id', -1)
+        self.post_json['link'] = self.response.json().get('link', -1)
         self.post_json.pop('order_id')
         self.post_json.pop('callback')
         self.post_json.pop('reseller')
         if self.response.status_code != status.HTTP_201_CREATED:
-            self.post_json['errors'] = str(self.response.json)
+            self.post_json['errors'] = str(self.response.json())
             self.error = True
 
         return Transaction.objects.create(**self.post_json)

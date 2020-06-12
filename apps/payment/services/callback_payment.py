@@ -17,7 +17,8 @@ class CallbackPayment:
 
     def run(self):
         self._verify_information()
-        return self.verify
+        return (self.verify, self.transaction_callback.id_pay_id,
+                self.transaction_callback.order_id)
 
     def _verify_information(self):
         self.json['id_pay_id'] = int(self.json['id'])
