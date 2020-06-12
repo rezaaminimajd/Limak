@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from model_utils.models import TimeStampedModel, UUIDModel
 from .services.inquiry_payment import InquiryPayment
@@ -39,6 +40,17 @@ class TransactionCreatorRequest(models.Model):
     pass
 
 
+class ReadyToLoadOrder(models.Model):
+    user = models.ForeignKey(User,
+                             related_name='loads',
+                             on_delete=models.DO_NOTHING)
+    order = models.OneToOneField('store.Basket', related_name='load',
+                                 on_delete=models.DO_NOTHING)
+
+    loaded = models.BooleanField(default=False)
+
+
+
 class Transaction(UUIDModel, TimeStampedModel):
     id_pay_id = models.CharField(max_length=512, unique=True)
     link = models.CharField(max_length=512)
@@ -52,7 +64,7 @@ class Transaction(UUIDModel, TimeStampedModel):
 
     @property
     def payed(self):
-        return self.callbacks.all().last().status in (
+        return self.callbacks.status in (
             TransactionStatusTypes.PAYMENT_VERIFIED,
             TransactionStatusTypes.PAYMENT_VERIFIED_PREVIOUSLY,
             TransactionStatusTypes.TRANSFERRED_COMPLETELY
@@ -69,14 +81,15 @@ class Transaction(UUIDModel, TimeStampedModel):
 
 
 class TransactionCallback(UUIDModel, TimeStampedModel):
-    transaction = models.ForeignKey(Transaction,
-                                    related_name='callbacks',
-                                    on_delete=models.CASCADE,
-                                    blank=True,
-                                    null=True)
+    transaction = models.OneToOneField(Transaction,
+                                       related_name='callbacks',
+                                       on_delete=models.CASCADE,
+                                       blank=True,
+                                       null=True)
     status = models.PositiveSmallIntegerField(
         choices=TransactionStatusTypes.TYPES
     )
+
     track_id = models.IntegerField()
     id_pay_id = models.CharField(max_length=512)
     order_id = models.CharField(max_length=128)

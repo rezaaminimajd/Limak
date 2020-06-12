@@ -24,7 +24,7 @@ class PayAPIView(GenericAPIView):
         if error:
             return Response(data={'detail': _('Error occurred')},
                             status=status.HTTP_400_BAD_REQUEST)
-        
+
         transaction = create_transaction.run()
         return redirect(transaction.link)
 
@@ -33,9 +33,22 @@ class CallbackPaymentAPIView(GenericAPIView):
 
     def post(self, request):
         from .services.callback_payment import CallbackPayment
+        from .services.verify_payment import VerifyPayment
+
         callback_payment = CallbackPayment(request=request)
-        verify = callback_payment.run()
+        verify, id_pay_id, order_id = callback_payment.run()
 
         if not verify:
             return Response(data={'detail': _('Error occurred')},
                             status=status.HTTP_400_BAD_REQUEST)
+
+        verify_payment = VerifyPayment(
+            id_pay_id=id_pay_id,
+            order_id=order_id
+        )
+        error = verify_payment.run()
+
+        if error:
+            return Response(data={'detail': _('Error occurred!')},
+                            status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'code': order_id}, status=status.HTTP_200_OK)

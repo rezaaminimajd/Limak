@@ -72,6 +72,7 @@ class Basket(UUIDModel, TimeStampedModel):
     user = models.ForeignKey(User, related_name='baskets',
                              on_delete=models.CASCADE)
     payed = models.BooleanField(default=False)
+    sent = models.BooleanField(default=False)
 
     @property
     def total_price(self):
