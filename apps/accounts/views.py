@@ -32,17 +32,10 @@ class SignUpAPIView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        send_date = timezone.now() + timezone.timedelta(seconds=5)
-
-        send_signup_email.apply_async(
-            [serializer.validated_data['email']],
-            eta=send_date
-        )
-
         serializer.save()
 
         return Response(
-            data={'details': _('Activation email sent, check your email')},
+            data={'details': _('Account created successfully!')},
             status=status.HTTP_200_OK
         )
 
