@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 from model_utils.models import UUIDModel, TimeStampedModel
 
@@ -72,6 +73,12 @@ class Basket(UUIDModel, TimeStampedModel):
                              on_delete=models.CASCADE)
     payed = models.BooleanField(default=False)
 
+    @property
+    def total_price(self):
+        return self.products.all().aggregate(total_price=Sum('total_price'))[
+            'total_price'
+        ]
+
 
 class ProductInBasket(TimeStampedModel):
     basket = models.ForeignKey('store.Basket',
@@ -89,3 +96,8 @@ class ProductInBasket(TimeStampedModel):
     size = models.ForeignKey('store.ClotheSize',
                              related_name='sizes_in_basket',
                              on_delete=models.CASCADE)
+    total_price = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.total_price = self.count * self.clothe.price
+        super().save(*args, **kwargs)

@@ -1,6 +1,21 @@
 from django.db import models
 
 
+class TransactionStatusTypes:
+    NOT_PAYED = 1
+    PAYMENT_UNSUCCESSFUL = 2
+    ERROR = 3
+    MONEY_BLOCKED = 4
+    RETURN_PAYER = 5
+    SYSTEMIC_RETURNED = 6
+    CANCELED_PAYMENT = 7
+    TRANSFERRED_TO_PAYMENT_PAGE = 8
+    WAITING_FOR_PAYMENT_CONFIRMATION = 10
+    PAYMENT_CONFIRMED = 100
+    PAYMENT_CONFIRMED_PREVIOUSLY = 101
+    TRANSFERRED_COMPLETELY = 200
+
+
 class TransactionCreatorRequest(models.Model):
     pass
 
@@ -10,10 +25,19 @@ class Transaction(models.Model):
     link = models.CharField(max_length=512)
     order = models.ForeignKey('store.Basket', related_name='transactions',
                               on_delete=models.DO_NOTHING)
+    amount = models.IntegerField()
     name = models.CharField(max_length=256, blank=True, null=True)
     phone = models.CharField(max_length=64, blank=True, null=True)
     mail = models.CharField(max_length=64, blank=True, null=True)
     desc = models.CharField(max_length=256, blank=True, null=True)
+
+    errors = models.TextField(default='')
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(fields=('id_pay_id', 'order'),
+                                    name='unique_order')
+        )
 
 
 class TransactionInquiryResponse(models.Model):

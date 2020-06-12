@@ -130,6 +130,7 @@ REST_FRAMEWORK = {
 
 IDPAY_APIKEY = config('IDPAY_APIKEY')
 CREATE_TRANSACTION_URL = config('CREATE_TRANSACTION_URL')
+CALLBACK_URL = config('CALLBACK_URL')
 
 PAYMENT_HEADER = {'Content-Type': 'application/json',
                   'X-API-KEY': IDPAY_APIKEY}

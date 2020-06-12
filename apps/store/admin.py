@@ -35,3 +35,14 @@ class ClotheColorAdmin(ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
     pass
+
+
+@admin.register(Basket)
+class BasketAdmin(ModelAdmin):
+    pass
+
+
+@admin.register(ProductInBasket)
+class ProductInBasketAdmin(ModelAdmin):
+    readonly_fields = ('total_price',)
+    pass
