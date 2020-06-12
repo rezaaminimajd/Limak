@@ -12,8 +12,12 @@ class ClotheInfoInline(admin.StackedInline):
 
 @admin.register(Clothe)
 class ClotheAdmin(ModelAdmin):
-    list_display = ['code', 'price', 'discounted_price', 'is_discounted',
+    list_display = ['id', 'code', 'price', 'discounted_price', 'is_discounted',
                     'category', 'kind']
+    fields = ['id', 'created', 'modified', 'code', 'price',
+              'discounted_price', 'is_discounted',
+              'description', 'kind', 'category']
+    readonly_fields = ['id', 'created', 'modified']
     inlines = [ClotheInfoInline]
 
 
