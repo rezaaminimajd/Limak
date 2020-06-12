@@ -36,7 +36,7 @@ class Transaction(models.Model):
     class Meta:
         constraints = (
             models.UniqueConstraint(fields=('id_pay_id', 'order'),
-                                    name='unique_order')
+                                    name='unique_order'),
         )
 
 
