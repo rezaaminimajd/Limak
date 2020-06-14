@@ -66,19 +66,19 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductInBasket
         fields = ('clothe', 'count', 'color', 'size',
-                  'clothe_id', 'color_name', 'size_name')
+                  'clothe_uid', 'color_name', 'size_name')
         extra_kwargs = {
             'cloth': {'read_only': True},
             'color': {'read_only': True},
             'size': {'read_only': True},
-            'clothe_id': {'write_only': True},
+            'clothe_uid': {'write_only': True},
             'color_name': {'write_only': True},
             'size_name': {'write_only': True}
         }
 
     def validate(self, attrs):
         attrs['clothe'] = get_object_or_404(Clothe,
-                                            id=attrs.get('clothe_id'))
+                                            id=attrs.get('clothe_uid'))
         attrs['color'] = get_object_or_404(ClotheColor,
                                            name=attrs.get('color_name'))
         attrs['size'] = get_object_or_404(ClotheSize,
