@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from model_utils.models import TimeStampedModel, UUIDModel
+from .services.inquiry_payment import InquiryPayment
 
 
 class TransactionStatusTypes:
@@ -100,54 +101,63 @@ class TransactionCallback(UUIDModel, TimeStampedModel):
 
 
 class TransactionInquiryResponse(models.Model):
-    status = models.IntegerField()
-    track_id = models.IntegerField()
-    id_pay_id = models.CharField(max_length=512)
-    order_id = models.CharField(max_length=512)
-    amount = models.IntegerField()
+    status = models.IntegerField(null=True, blank=True)
+    track_id = models.IntegerField(null=True, blank=True)
+    id_pay_id = models.CharField(max_length=512, null=True, blank=True)
+    order_id = models.CharField(max_length=512, null=True, blank=True)
+    amount = models.IntegerField(null=True, blank=True)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        transaction_inquiry_response = InquiryPayment(
+            self.id_pay_id,
+            self.order_id
+        ).complete_fields()
+        super(TransactionInquiryResponse, self).save(
+            transaction_inquiry_response
+        )
 
 
 class Wage(models.Model):
     transaction_inquiry_response = models.ForeignKey(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='wage')
-    by = models.CharField(max_length=32)
-    type = models.CharField(max_length=32)
-    amount = models.IntegerField()
+    by = models.CharField(max_length=32, null=True, blank=True)
+    type = models.CharField(max_length=32, null=True, blank=True)
+    amount = models.IntegerField(null=True, blank=True)
 
 
 class Payer(models.Model):
     transaction_inquiry_response = models.ForeignKey(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='payer')
-    name = models.CharField(max_length=128)
-    phone = models.CharField(max_length=128)
-    mail = models.CharField(max_length=128)
-    desc = models.CharField(max_length=1024)
+    name = models.CharField(max_length=128, null=True, blank=True)
+    phone = models.CharField(max_length=128, null=True, blank=True)
+    mail = models.CharField(max_length=128, null=True, blank=True)
+    desc = models.CharField(max_length=1024, null=True, blank=True)
 
 
 class Payment(models.Model):
     transaction_inquiry_response = models.ForeignKey(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='payment')
-    track_id = models.IntegerField()
-    amount = models.IntegerField()
-    card_no = models.CharField(max_length=1024)
-    hashed_card_no = models.CharField(max_length=1024)
-    date = models.IntegerField()
+    track_id = models.IntegerField(null=True, blank=True)
+    amount = models.IntegerField(null=True, blank=True)
+    card_no = models.CharField(max_length=1024, null=True, blank=True)
+    hashed_card_no = models.CharField(max_length=1024, null=True, blank=True)
+    date = models.IntegerField(null=True, blank=True)
 
 
 class Verify(models.Model):
     transaction_inquiry_response = models.ForeignKey(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='verify')
-    date = models.IntegerField()
+    date = models.IntegerField(null=True, blank=True)
 
-
-class Settlement(models.Model):
-    transaction_inquiry_response = models.ForeignKey(
-        'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
-        related_name='settlement')
-    track_id = models.IntegerField()
-    amount = models.IntegerField()
-    date = models.IntegerField()
+    class Settlement(models.Model):
+        transaction_inquiry_response = models.ForeignKey(
+            'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
+            related_name='settlement')
+        track_id = models.IntegerField(null=True, blank=True)
+        amount = models.IntegerField(null=True, blank=True)
+        date = models.IntegerField(null=True, blank=True)
