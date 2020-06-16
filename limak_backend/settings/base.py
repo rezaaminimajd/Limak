@@ -135,3 +135,9 @@ INQUIRY_PAYMENT_URL = config('INQUIRY_PAYMENT_URL')
 
 PAYMENT_HEADER = {'Content-Type': 'application/json',
                   'X-API-KEY': IDPAY_APIKEY}
+
+STATIC_ROOT = '/static'
+MEDIA_ROOT = '/media'
+
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
