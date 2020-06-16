@@ -36,7 +36,7 @@ services:
       - ./media/:/media/
       - /var/log/limak_backend:/var/log/limak_backend
     ports:
-      - 194.5.195.68:8787:8000
+      - 45.149.77.38:8787:8000
       - 8000:8000
     env_file:
       - .env
