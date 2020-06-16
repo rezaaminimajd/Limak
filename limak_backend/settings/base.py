@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'apps.payment',
     'django_seed',
-    'gunicorn'
+    'gunicorn',
 ]
 
 MIDDLEWARE = [
