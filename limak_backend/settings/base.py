@@ -138,6 +138,8 @@ PAYMENT_HEADER = {'Content-Type': 'application/json',
 
 STATIC_ROOT = '/static'
 MEDIA_ROOT = '/media'
+CELERY_BROKER_URL = "amqp://limak:covid19@rabbitmq:5672//"
+
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
