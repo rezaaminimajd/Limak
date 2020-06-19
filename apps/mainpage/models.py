@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib import messages
 
 
 class Information(models.Model):
@@ -17,5 +16,3 @@ class Information(models.Model):
         query = Information.objects.all()
         if len(query) == 0:
             super(Information, self).save()
-        else:
-           messages.warning()
