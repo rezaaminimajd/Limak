@@ -49,11 +49,13 @@ class ResetPasswordAPIView(GenericAPIView):
         data = self.get_serializer(request.data).data
         user = get_object_or_404(User, email=data['email'])
 
-        send_date = timezone.now() + timezone.timedelta(seconds=5)
-        reset_password.apply_async(
-            [user.id],
-            eta=send_date
-        )
+        reset_password(user.id)
+        # send_date = timezone.now() + timezone.timedelta(seconds=5)
+        # reset_password.apply_async(
+        #     [user.id],
+        #     eta=send_date
+        # )
+        #
 
         return Response(
             data={'details': _('Reset password email sent, check your email')},
