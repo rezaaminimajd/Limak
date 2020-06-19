@@ -17,11 +17,15 @@ class InquiryPayment:
         }
 
     def _inquiry(self):
-        self.response = requests.post(
+        response = requests.post(
             url=settings.VERIFY_PAYMENT_URL,
             json=self.post_json,
             headers=settings.PAYMENT_HEADER
         )
+        if response['status'] == 200:
+            self.response = response
+            return True
+        return False
 
     def _load_inquiry_json(self):
         from ..models import TransactionInquiryResponse
@@ -34,5 +38,7 @@ class InquiryPayment:
 
     def complete_fields(self):
         self._fill_post_json()
-        self._inquiry()
+        is_valid_response = self._inquiry()
+        if not is_valid_response:
+            return None
         return self._load_inquiry_json()
