@@ -71,9 +71,7 @@ class ResetPasswordConfirmAPIView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        reset_password_confirm.apply_async(
-            [data['uid'], data['token'], data['password']]
-        )
+        reset_password_confirm(data['uid'], data['token'], data['password'])
 
         return Response(
             data={'details': _('Password changed successfully')},
