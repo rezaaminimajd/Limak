@@ -78,8 +78,11 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, data):
         if data['new_password'] != data['new_password_repeat']:
             raise PasswordsNotMatch()
-        if not self.context['request'].user.check_password(data['old_password']):
+        if not self.context['request'].user.check_password(
+                data['old_password']):
             raise WrongPassword()
+
+        return data
 
     def save(self, **kwargs):
         self.context['request'].user.set_password(
