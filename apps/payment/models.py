@@ -50,7 +50,6 @@ class ReadyToLoadOrder(models.Model):
     loaded = models.BooleanField(default=False)
 
 
-
 class Transaction(UUIDModel, TimeStampedModel):
     id_pay_id = models.CharField(max_length=512, unique=True)
     link = models.CharField(max_length=512)
@@ -106,6 +105,7 @@ class TransactionInquiryResponse(models.Model):
     id_pay_id = models.CharField(max_length=512, null=True, blank=True)
     order_id = models.CharField(max_length=512, null=True, blank=True)
     amount = models.IntegerField(null=True, blank=True)
+    date = models.IntegerField(null=True, blank=True)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -113,13 +113,14 @@ class TransactionInquiryResponse(models.Model):
             self.id_pay_id,
             self.order_id
         ).complete_fields()
+
         super(TransactionInquiryResponse, self).save(
             transaction_inquiry_response
         )
 
 
 class Wage(models.Model):
-    transaction_inquiry_response = models.ForeignKey(
+    transaction_inquiry_response = models.OneToOneField(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='wage')
     by = models.CharField(max_length=32, null=True, blank=True)
@@ -128,7 +129,7 @@ class Wage(models.Model):
 
 
 class Payer(models.Model):
-    transaction_inquiry_response = models.ForeignKey(
+    transaction_inquiry_response = models.OneToOneField(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='payer')
     name = models.CharField(max_length=128, null=True, blank=True)
@@ -138,7 +139,7 @@ class Payer(models.Model):
 
 
 class Payment(models.Model):
-    transaction_inquiry_response = models.ForeignKey(
+    transaction_inquiry_response = models.OneToOneField(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='payment')
     track_id = models.IntegerField(null=True, blank=True)
@@ -149,15 +150,16 @@ class Payment(models.Model):
 
 
 class Verify(models.Model):
-    transaction_inquiry_response = models.ForeignKey(
+    transaction_inquiry_response = models.OneToOneField(
         'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
         related_name='verify')
     date = models.IntegerField(null=True, blank=True)
 
-    class Settlement(models.Model):
-        transaction_inquiry_response = models.ForeignKey(
-            'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
-            related_name='settlement')
-        track_id = models.IntegerField(null=True, blank=True)
-        amount = models.IntegerField(null=True, blank=True)
-        date = models.IntegerField(null=True, blank=True)
+
+class Settlement(models.Model):
+    transaction_inquiry_response = models.OneToOneField(
+        'payment.TransactionInquiryResponse', on_delete=models.CASCADE,
+        related_name='settlement')
+    track_id = models.IntegerField(null=True, blank=True)
+    amount = models.IntegerField(null=True, blank=True)
+    date = models.IntegerField(null=True, blank=True)
