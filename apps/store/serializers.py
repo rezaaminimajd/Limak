@@ -91,6 +91,7 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
         if not basket:
             basket = Basket.objects.create(user=self.context['request'].user)
         attrs['basket'] = basket
+        return attrs
 
     def create(self, validated_data):
         return ProductInBasket.objects.create(**validated_data)
