@@ -64,7 +64,7 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
     size = ClotheSizeSerializers(read_only=True)
     clothe_uid = serializers.CharField(max_length=200)
     color_name = serializers.CharField(max_length=100)
-    site_name = serializers.CharField(max_length=100)
+    size_name = serializers.CharField(max_length=100)
 
     class Meta:
         model = ProductInBasket
