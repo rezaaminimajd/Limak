@@ -43,7 +43,7 @@ class ResetPassword:
         from apps.core.utils import send_email
 
         context = {
-            'domain': settings.DOMAIN,
+            'domain': 'limak.co.net',
             'username': self.user.username,
             'uid': self.uid,
             'token': self._reset_password_token.token,
