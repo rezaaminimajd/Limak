@@ -85,6 +85,7 @@ class ProductInBasketAPIView(GenericAPIView):
         add = json.loads(request.body).get('add', True)
         try:
             count = int(count)
+            add = eval(add)
         except ValueError:
             return Response(data={'details': 'Unexpected value'},
                             status=status.HTTP_400_BAD_REQUEST)
