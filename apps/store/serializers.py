@@ -68,9 +68,10 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductInBasket
-        fields = ('clothe', 'count', 'color', 'size',
+        fields = ('id', 'clothe', 'count', 'color', 'size',
                   'clothe_uid', 'color_name', 'size_name')
         extra_kwargs = {
+            'id': {'read_only': True},
             'cloth': {'read_only': True},
             'color': {'read_only': True},
             'size': {'read_only': True},
