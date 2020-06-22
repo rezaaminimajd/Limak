@@ -25,7 +25,7 @@ class ResetPassword:
 
     def _cancel_previous_tokens(self) -> None:
         (ResetPasswordToken.objects.
-         filter(self.uid).
+         filter(uid=self.uid).
          filter(expired=False).
          update(expired=True)
          )
