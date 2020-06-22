@@ -23,7 +23,7 @@ class ResetPasswordConfirm:
         self._change_password()
 
     def _check_expiration(self) -> None:
-        if timezone.now() > self._reset_password_token.expiration_date:
+        if timezone.now().date() > self._reset_password_token.expiration_date:
             self._reset_password_token.make_expired()
 
             raise TokenExpired()
