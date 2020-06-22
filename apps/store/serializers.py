@@ -90,6 +90,10 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
                                        ).filter(payed=False).last()
         if not basket:
             basket = Basket.objects.create(user=self.context['request'].user)
+        attrs.pop('clothe_uid')
+        attrs.pop('color_name')
+        attrs.pop('size_name')
+
         attrs['basket'] = basket
         return attrs
 
