@@ -1,6 +1,6 @@
 """ API 1.
 
-Name: 
+Name: Sign Up
 
 URL: 
 
@@ -13,14 +13,20 @@ Description:
 """
 
 Json_1 = {
-
-    # Leave Emtpy if not needed
-
+    "first_name": "reza",
+    "last_name": "amini",
+    "email": "a@b.com",
+    "password": "majd2000!",
+    "password_repeat": "majd2000!",
+    "profile": {
+        "birth_date": "1900_01_01",
+        "phone_number": "09111111111"
+    }
 }
 
 """ API 2.
 
-Name: 
+Name: Login
 
 URL: 
 
@@ -33,8 +39,6 @@ Description:
 """
 
 Json_2 = {
-
-    # Leave Emtpy if not needed
 
 }
 
