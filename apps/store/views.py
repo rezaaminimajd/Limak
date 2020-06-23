@@ -74,8 +74,8 @@ class ProductInBasketAPIView(GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(data={'details': 'Product added to basket!'},
+            product = serializer.save()
+            return Response(data={'id': product.id},
                             status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
