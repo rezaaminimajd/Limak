@@ -16,7 +16,7 @@ urlpatterns = [
     path('basket', view=views.BasketAPIView.as_view(), name='basket'),
     path('basket/add', view=views.ProductInBasketAPIView.as_view(),
          name='basket_add'),
-    path('basket/edit/<str:product_id>',
+    path('basket/edit/<int:product_id>',
          view=views.ProductInBasketAPIView.as_view(),
          name='basket_edit'),
 ]
