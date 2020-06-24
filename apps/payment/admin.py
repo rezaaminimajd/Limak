@@ -44,3 +44,8 @@ class TransactionAdmin(admin.ModelAdmin):
 @admin.register(TransactionCallback)
 class TransactionCallbackAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(ReadyToLoadOrder)
+class ReadyToLoadAdmin(admin.ModelAdmin):
+    pass
