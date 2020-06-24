@@ -34,3 +34,13 @@ class TransactionInquiryResponseAdmin(admin.ModelAdmin):
     list_display_links = ['id_pay_id']
     readonly_fields = ['status', 'order_id', 'amount', 'date']
     inlines = [WageInline, PayerInline, VerifyInline, PaymentInline]
+
+
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TransactionCallback)
+class TransactionCallbackAdmin(admin.ModelAdmin):
+    pass
