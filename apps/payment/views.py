@@ -19,14 +19,16 @@ class PayAPIView(GenericAPIView):
         if not basket:
             raise NotFound()
 
-        create_transaction, error = CreateTransaction(order=basket,
-                                                      request=request)
+        create_transaction = CreateTransaction(order=basket,
+                                               request=request)
+
+        transaction, error = create_transaction.run()
         if error:
             return Response(data={'detail': _('Error occurred')},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        transaction = create_transaction.run()
-        return redirect(transaction.link)
+        # return redirect(transaction.link)
+        return Response(data={'link': transaction.link})
 
 
 class CallbackPaymentAPIView(GenericAPIView):
