@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
+from apps.store.exceptions import OutOfStock
 from .models import *
 
 
@@ -80,6 +81,17 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
             'size_name': {'write_only': True}
         }
 
+    def check_clothe_availability(self, count, clothe_uid, color_name,
+                                  size_name):
+        in_store = ClotheInfo.objects.filter(
+            clothe_id=clothe_uid
+        ).filter(
+            color__name=color_name
+        ).filter(size__name=size_name).last()
+        if in_store >= count:
+            return True
+        return False
+
     def validate(self, attrs):
         attrs['clothe'] = get_object_or_404(Clothe,
                                             id=attrs.get('clothe_uid'))
@@ -91,6 +103,13 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
                                        ).filter(payed=False).last()
         if not basket:
             basket = Basket.objects.create(user=self.context['request'].user)
+
+        if not self.check_clothe_availability(
+                attrs['count'], attrs['clothe_uid'], attrs['color_name'],
+                attrs['size_name']
+        ):
+            raise OutOfStock()
+
         attrs.pop('clothe_uid')
         attrs.pop('color_name')
         attrs.pop('size_name')

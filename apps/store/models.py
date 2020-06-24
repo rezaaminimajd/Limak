@@ -40,7 +40,12 @@ class ClotheInfo(TimeStampedModel, UUIDModel):
     count = models.IntegerField()
     color = models.ForeignKey('store.ClotheColor', on_delete=models.CASCADE)
     size = models.ForeignKey('store.ClotheSize', on_delete=models.CASCADE)
-    for_basket = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(fields=('clothe', 'color', 'size'),
+                                    name='unique_clothe_info'),
+        )
 
     @property
     def is_finish(self):
