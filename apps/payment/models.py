@@ -51,7 +51,7 @@ class ReadyToLoadOrder(models.Model):
 
 
 class Transaction(UUIDModel, TimeStampedModel):
-    id_pay_id = models.CharField(max_length=512, unique=True)
+    id_pay_id = models.CharField(max_length=512, null=True)
     link = models.CharField(max_length=512)
     order = models.ForeignKey('store.Basket', related_name='transactions',
                               on_delete=models.DO_NOTHING)
