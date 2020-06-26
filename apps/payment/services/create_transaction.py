@@ -26,7 +26,7 @@ class CreateTransaction:
 
     def _fill_post_json(self):
         self.post_json = {
-            'order_id': self.order.id,
+            'order_id': str(self.order.id),
             'amount': self.order.total_price,
             'name': self.user.get_full_name(),
             'phone': self.user.profile.phone_number,
@@ -45,7 +45,7 @@ class CreateTransaction:
 
     def _create_transaction(self):
         self.post_json['order'] = self.order
-        self.post_json['id_pay_id'] = self.response.json().get('id', -1)
+        self.post_json['id_pay_id'] = self.response.json().get('id', None)
         self.post_json['link'] = self.response.json().get('link', -1)
         self.post_json.pop('order_id')
         self.post_json.pop('callback')

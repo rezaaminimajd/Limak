@@ -95,7 +95,7 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
         ).filter(
             color__name=color_name
         ).filter(size__name=size_name).last()
-        if in_store >= count:
+        if in_store.count >= count:
             return True
         return False
 
