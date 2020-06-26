@@ -5,7 +5,7 @@ from apps.store.exceptions import OutOfStock
 from .models import *
 
 
-class ImageSerializers(serializers.Serializer):
+class ImageSerializers(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ['picture']
