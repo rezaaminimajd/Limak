@@ -34,6 +34,12 @@ class Clothe(TimeStampedModel, UUIDModel):
         return self.code
 
 
+class Image(models.Model):
+    clothe = models.ForeignKey('store.Clothe', related_name='images',
+                               on_delete=models.CASCADE)
+    picture = models.ImageField()
+
+
 class ClotheInfo(TimeStampedModel, UUIDModel):
     clothe = models.ForeignKey('store.Clothe', related_name='information',
                                on_delete=models.CASCADE)

@@ -10,6 +10,10 @@ class ClotheInfoInline(admin.StackedInline):
     readonly_fields = ['id']
 
 
+class ImageInLine(admin.StackedInline):
+    models = Image
+
+
 @admin.register(Clothe)
 class ClotheAdmin(ModelAdmin):
     list_display = ['id', 'code', 'price', 'discounted_price', 'is_discounted',
@@ -18,7 +22,7 @@ class ClotheAdmin(ModelAdmin):
               'discounted_price', 'is_discounted',
               'description', 'kind', 'category']
     readonly_fields = ['id', 'created', 'modified']
-    inlines = [ClotheInfoInline]
+    inlines = [ClotheInfoInline, ImageInLine]
 
 
 @admin.register(ClotheKind)

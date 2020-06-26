@@ -5,6 +5,12 @@ from apps.store.exceptions import OutOfStock
 from .models import *
 
 
+class ImageSerializers(serializers.Serializer):
+    class Meta:
+        model = Image
+        fields = ['picture']
+
+
 class ClotheSizeSerializers(serializers.ModelSerializer):
     class Meta:
         model = ClotheSize
@@ -42,11 +48,12 @@ class ClotheSerializers(serializers.ModelSerializer):
     kind = ClotheKindSerializers()
     category = CategorySerializers()
     information = ClotheInfoSerializers(many=True)
+    images = ImageSerializers(many=True)
 
     class Meta:
         model = Clothe
         fields = ['id', 'code', 'price', 'discounted_price', 'is_discounted',
-                  'category', 'kind', 'description', 'information']
+                  'category', 'kind', 'description', 'information', 'images']
 
 
 class ClotheInBasketSerializer(serializers.ModelSerializer):
