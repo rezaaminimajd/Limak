@@ -11,7 +11,7 @@ class ClotheInfoInline(admin.StackedInline):
 
 
 class ImageInLine(admin.StackedInline):
-    models = Image
+    model = Image
 
 
 @admin.register(Clothe)
