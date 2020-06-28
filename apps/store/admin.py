@@ -54,3 +54,8 @@ class BasketAdmin(ModelAdmin):
 class ProductInBasketAdmin(ModelAdmin):
     readonly_fields = ('total_price',)
     pass
+
+
+@admin.register(ClotheInfo)
+class ClotheInfoAdmin(ModelAdmin):
+    pass
