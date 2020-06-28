@@ -41,8 +41,8 @@ class Image(models.Model):
 
 
 class ClotheInfo(TimeStampedModel, UUIDModel):
-    clothe = models.ForeignKey('store.Clothe', related_name='information',
-                               on_delete=models.CASCADE)
+    clothe = models.OneToOneField('store.Clothe', related_name='information',
+                                  on_delete=models.CASCADE)
     count = models.IntegerField()
     color = models.ForeignKey('store.ClotheColor', on_delete=models.CASCADE)
     size = models.ForeignKey('store.ClotheSize', on_delete=models.CASCADE)

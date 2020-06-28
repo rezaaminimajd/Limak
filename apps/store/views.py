@@ -80,25 +80,6 @@ class ProductInBasketAPIView(GenericAPIView):
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, product_id):
-        count = json.loads(request.body).get('count', 1)
-        add = json.loads(request.body).get('add', True)
-        try:
-            count = int(count)
-            add = eval(add)
-        except ValueError:
-            return Response(data={'details': 'Unexpected value'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        else:
-            product = self.get_product(product_id)
-            product.count = (product.count + count
-                             if add else product.count - count)
-            if product.count <= 0:
-                product.delete()
-            else:
-                product.save()
-            return Response(status.HTTP_200_OK)
-
     def delete(self, request, product_id):
         product = self.get_product(product_id)
         product.delete()
