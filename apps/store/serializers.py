@@ -47,7 +47,7 @@ class ClotheInfoSerializers(serializers.ModelSerializer):
 class ClotheSerializers(serializers.ModelSerializer):
     kind = ClotheKindSerializers()
     category = CategorySerializers()
-    information = ClotheInfoSerializers(many=True)
+    information = ClotheInfoSerializers()
     images = ImageSerializers(many=True)
 
     class Meta:
